@@ -1,0 +1,13 @@
+- package:
+    name: 
+      - unbound
+      - ca-certificates
+    state: present
+  notify:
+    - restart unbound
+
+- template:
+    src: tune.conf.j2
+    dest: /etc/unbound/unbound.conf.d/tune.conf
+  notify:
+    - restart unbound

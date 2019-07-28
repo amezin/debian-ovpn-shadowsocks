@@ -1,0 +1,3 @@
+- package:
+    name: fail2ban
+    state: latest

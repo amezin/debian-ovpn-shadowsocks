@@ -1,0 +1,33 @@
+- package:
+    name: 
+      - shadowsocks-libev
+      - simple-obfs
+    state: latest
+  notify:
+    - restart shadowsocks
+
+- template:
+    src: config.json.j2
+    dest: /etc/shadowsocks-libev/config.json
+  notify:
+    - restart shadowsocks
+
+- template:
+    src: fail2ban-filter.conf.j2
+    dest: /etc/fail2ban/filter.d/shadowsocks-libev.conf
+  notify:
+    - reload fail2ban
+
+- template:
+    src: fail2ban-jail.conf.j2
+    dest: /etc/fail2ban/jail.d/shadowsocks-libev.conf
+  notify:
+    - reload fail2ban
+
+- template:
+    src: client.json.j2
+    dest: /etc/shadowsocks-libev/client.json
+
+- fetch:
+    src: /etc/shadowsocks-libev/client.json
+    dest: "./downloads"

@@ -1,0 +1,8 @@
+[INCLUDES]
+before = common.conf
+
+[Definition]
+_daemon = ss-server
+failregex = ^\w+\s+\d+ \d+:\d+:\d+\s+%(__prefix_line)sERROR:\s+failed to handshake with <HOST>: authentication error$
+ignoreregex =
+datepattern = %%Y-%%m-%%d %%H:%%M:%%S

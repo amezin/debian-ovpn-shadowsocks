@@ -1,0 +1,15 @@
+---
+- hosts: all
+  remote_user: root
+
+  roles:
+    - role: no-ssh-password
+      tags: no-ssh-password
+    - role: update-all
+      tags: update-all
+    - role: fail2ban
+      tags: fail2ban
+    - role: shadowsocks
+      tags: shadowsocks
+    - role: net-tune
+      tags: net-tune

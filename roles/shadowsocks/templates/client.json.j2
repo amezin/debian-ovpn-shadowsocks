@@ -1,0 +1,8 @@
+{
+    "server": "{{ ansible_default_ipv4.address }}",
+    "server_port": {{ shadowsocks_port }},
+    "password": "{{ shadowsocks_password }}",
+    "local_port": {{ shadowsocks_client_port }},
+    "plugin": "obfs-local",
+    "plugin_opts": "obfs={{ shadowsocks_obfs_mode }};t=60;fast-open;obfs-host={{ shadowsocks_obfs_host }}"
+}
