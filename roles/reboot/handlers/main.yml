@@ -1,0 +1,2 @@
+- name: reboot later
+  include_tasks: now.yml

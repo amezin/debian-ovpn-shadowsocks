@@ -1,0 +1,37 @@
+- apt_key:
+    keyserver: keys.gnupg.net
+    id: 379CE192D401AB61
+
+- apt_repository:
+    repo: deb https://dl.bintray.com/multipath-tcp/mptcp_deb stable main
+
+- package:
+    name: linux-mptcp
+  register: mptcp_installed
+
+- lineinfile:
+    path: /etc/modules-load.d/mptcp_olia.conf
+    line: mptcp_olia
+    create: yes
+  register: modules_load_changed
+
+- when: mptcp_installed.changed
+  include_role:
+    name: reboot
+    tasks_from: now
+
+- when: modules_load_changed.changed and not mptcp_installed.changed
+  service:
+    name: systemd-modules-load
+    state: restarted
+
+- sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    sysctl_file: /etc/sysctl.d/91-mptcp.conf
+  with_items:
+    - name: net.mptcp.mptcp_enabled
+      value: "2"
+    - name: net.ipv4.tcp_congestion_control
+      value: olia

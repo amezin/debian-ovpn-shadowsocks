@@ -4,7 +4,9 @@
     "password": "{{ shadowsocks_password }}",
     "local_port": {{ shadowsocks_client_port }},
     "fast_open": true,
-    "no_delay": true{% if shadowsocks_obfs %},
+    "no_delay": true,
+    "mptcp": true,
+    "ipv6_first": true{% if shadowsocks_obfs %},
     "plugin": "obfs-local",
-    "plugin_opts": "obfs={{ shadowsocks_obfs_mode }};t=60;fast-open;obfs-host={{ shadowsocks_obfs_host }}"{% endif %}
+    "plugin_opts": "obfs={{ shadowsocks_obfs_mode }};t=60;mptcp;fast-open;6;obfs-host={{ shadowsocks_obfs_host }}"{% endif %}
 }

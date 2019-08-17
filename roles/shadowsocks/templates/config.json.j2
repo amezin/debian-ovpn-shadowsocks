@@ -4,7 +4,9 @@
     "password": "{{ shadowsocks_password }}",
     "nameserver": "127.0.0.1",
     "fast_open": true,
-    "no_delay": true{% if shadowsocks_obfs %},
+    "no_delay": true,
+    "mptcp": true,
+    "ipv6_first": true{% if shadowsocks_obfs %},
     "plugin": "obfs-server",
-    "plugin_opts": "obfs={{ shadowsocks_obfs_mode }};t=60;fast-open"{% endif %}
+    "plugin_opts": "obfs={{ shadowsocks_obfs_mode }};t=60;mptcp;fast-open;6"{% endif %}
 }
