@@ -1,3 +1,7 @@
+- template:
+    src: pin-backports.j2
+    dest: /etc/apt/preferences.d/shadowsocks-libev-backports
+
 - package:
     name: 
       - shadowsocks-libev
