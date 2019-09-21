@@ -3,10 +3,15 @@
     dest: /etc/apt/preferences.d/shadowsocks-libev-backports
 
 - package:
-    name: 
-      - shadowsocks-libev
-      - simple-obfs
+    name: shadowsocks-libev
     state: latest
+  notify:
+    - restart shadowsocks
+
+- package:
+    name: simple-obfs
+    state: latest
+  when: shadowsocks_obfs
   notify:
     - restart shadowsocks
 
