@@ -1,6 +1,6 @@
 shadowsocks_port: 8388
 shadowsocks_password: "{{ lookup('password', 'downloads/' + inventory_hostname + '/shadowsocks_password') }}"
 shadowsocks_client_port: 1080
-shadowsocks_obfs: true
+shadowsocks_obfs: false
 shadowsocks_obfs_mode: tls
 shadowsocks_obfs_host: "{{ lookup('dig', ansible_default_ipv4.address, 'qtype=PTR') }}"
