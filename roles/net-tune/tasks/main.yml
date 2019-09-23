@@ -7,7 +7,7 @@
     - name: net.core.default_qdisc
       value: fq_codel
     - name: net.ipv4.tcp_congestion_control
-      value: hybla
+      value: bbr
     - name: net.core.rmem_max
       value: "67108864"
     - name: net.core.wmem_max
