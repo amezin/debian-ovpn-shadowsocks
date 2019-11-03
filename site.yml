@@ -9,6 +9,8 @@
       tags: update-all
     - role: fail2ban
       tags: fail2ban
+    - role: kernel-backport
+      tags: kernel-backport
     - role: shadowsocks
       tags: shadowsocks
     - role: net-tune
