@@ -1,0 +1,9 @@
+- apt:
+    package: apt-transport-https
+
+- apt_repository:
+    repo: deb https://deb.debian.org/debian/ unstable main
+
+- template:
+    src: pin-unstable.j2
+    dest: /etc/apt/preferences.d/limit-unstable
