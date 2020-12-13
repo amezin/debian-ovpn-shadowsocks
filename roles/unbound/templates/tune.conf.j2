@@ -8,6 +8,8 @@ server:
     use-caps-for-id: yes
     ssl-upstream: yes
     tls-cert-bundle: /etc/ssl/certs/ca-certificates.crt
+    interface: 0.0.0.0
+    interface: ::0
 
 forward-zone:
     name: "."
