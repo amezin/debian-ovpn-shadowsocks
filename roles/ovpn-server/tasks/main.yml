@@ -1,0 +1,65 @@
+- name: "Install openvpn"
+  package:
+    name: openvpn
+    state: present
+
+- name: "{{ openvpn_tls_key }}"
+  shell: "openvpn --genkey --secret {{ openvpn_tls_key }}"
+  args:
+    creates: "{{ openvpn_tls_key }}"
+  notify:
+    - restart openvpn server
+
+- name: "/etc/openvpn/server.conf"
+  template:
+    src: server.conf.j2
+    dest: /etc/openvpn/server.conf
+  notify:
+    - restart openvpn server
+
+- name: "start openvpn server"
+  service:
+    name: openvpn@server
+    enabled: yes
+    state: started
+
+- name: "allow requests to Unbound from VPN subnet"
+  template:
+    src: unbound-allow-ovpn.conf.j2
+    dest: /etc/unbound/unbound.conf.d/allow-ovpn.conf
+  notify:
+    - restart unbound
+
+- name: "read {{ easyrsa_ca_crt }}"
+  slurp:
+    src: "{{ easyrsa_ca_crt }}"
+  register: easyrsa_ca_crt_slurp
+
+- name: "read {{ easyrsa_client_key }}"
+  slurp:
+    src: "{{ easyrsa_client_key }}"
+  register: easyrsa_client_key_slurp
+
+- name: "read {{ easyrsa_client_crt }}"
+  slurp:
+    src: "{{ easyrsa_client_crt }}"
+  register: easyrsa_client_crt_slurp
+
+- name: "read {{ openvpn_tls_key }}"
+  slurp:
+    src: "{{ openvpn_tls_key }}"
+  register: openvpn_tls_key_slurp
+
+- name: "{{ openvpn_client_config }}"
+  template:
+    src: client.ovpn.j2
+    dest: "{{ openvpn_client_config }}"
+
+- fetch:
+    src: "{{ item }}"
+    dest: "./downloads"
+  with_items:
+    - "{{ openvpn_tls_key }}"
+    - "{{ openvpn_client_config }}"
+
+- import_tasks: firewalld.yml

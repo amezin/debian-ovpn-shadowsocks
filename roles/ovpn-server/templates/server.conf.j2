@@ -1,0 +1,46 @@
+proto {{ openvpn_proto }}6
+dev {{ openvpn_dev }}
+port {{ openvpn_port }}
+
+ca {{ easyrsa_ca_crt }}
+cert {{ easyrsa_server_crt }}
+key {{ easyrsa_server_key }}
+dh {{ easyrsa_dh_pem }}
+
+topology subnet
+server {{ openvpn_ipv4_subnet | ipaddr('network') }} {{ openvpn_ipv4_subnet | ipaddr('netmask') }}
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS {{ openvpn_ipv4_subnet | ipaddr('1') | ipaddr('address') }}"
+
+server-ipv6 {{ openvpn_ipv6_subnet }}
+push "redirect-gateway ipv6"
+push "dhcp-option DNS {{ openvpn_ipv6_subnet | ipaddr('1') | ipaddr('address') }}"
+
+user nobody
+group nogroup
+
+keepalive 10 120
+persist-key
+persist-tun
+verb 3
+{% if openvpn_proto == 'udp' %}
+explicit-exit-notify 1
+{% endif %}
+
+cipher {{ openvpn_cipher }}
+ncp-ciphers {{ openvpn_cipher }}
+
+duplicate-cn
+
+tls-crypt {{ openvpn_tls_key }}
+
+compress
+push compress
+
+tcp-nodelay
+fast-io
+
+mtu-disc yes
+mtu-test
+
+ifconfig-pool-persist ipp.txt

@@ -1,0 +1,36 @@
+client
+tls-client
+proto {{ openvpn_proto }}
+remote {{ ansible_default_ipv4.address }} {{ openvpn_port }} {{ openvpn_proto }}4
+remote {{ ansible_default_ipv6.address }} {{ openvpn_port }} {{ openvpn_proto }}6
+dev tun
+topology subnet
+pull
+persist-key
+persist-tun
+remote-cert-tls server
+
+<ca>
+{{ easyrsa_ca_crt_slurp.content | b64decode }}
+</ca>
+
+<cert>
+{{ easyrsa_client_crt_slurp.content | b64decode }}
+</cert>
+
+<key>
+{{ easyrsa_client_key_slurp.content | b64decode }}
+</key>
+
+<tls-crypt>
+{{ openvpn_tls_key_slurp.content | b64decode }}
+</tls-crypt>
+
+cipher {{ openvpn_cipher }}
+ncp-ciphers {{ openvpn_cipher }}
+
+tcp-nodelay
+fast-io
+
+mtu-disc yes
+mtu-test

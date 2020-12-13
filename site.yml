@@ -17,3 +17,5 @@
       tags: shadowsocks
     - role: net-tune
       tags: net-tune
+    - role: ovpn-server
+      tags: ovpn-server
