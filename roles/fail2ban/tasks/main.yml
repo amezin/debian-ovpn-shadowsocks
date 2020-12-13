@@ -1,3 +1,9 @@
 - package:
     name: fail2ban
     state: latest
+
+- template:
+    src: fail2ban-firewalld.conf.j2
+    dest: /etc/fail2ban/jail.d/00-firewalld.conf
+  notify:
+    - reload fail2ban

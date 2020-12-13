@@ -1,0 +1,39 @@
+- template:
+    src: firewalld-pin-backport.j2
+    dest: /etc/apt/preferences.d/firewalld-backports
+
+- package:
+    name:
+      - ipset
+      - iptables
+    state: latest
+
+- package:
+    name:
+      - firewalld
+    state: latest
+
+- service:
+    name: firewalld
+    enabled: true
+    state: started
+
+- ansible.posix.firewalld:
+    interface: "{{ ansible_default_ipv4.interface }}"
+    zone: public
+    permanent: yes
+    state: enabled
+  register: firewalld_default_interface_moved
+
+- service:
+    name: firewalld
+    enabled: true
+    state: reloaded
+  when: firewalld_default_interface_moved.changed
+
+- ansible.posix.firewalld:
+    zone: public
+    masquerade: yes
+    permanent: yes
+    immediate: yes
+    state: disabled

@@ -40,3 +40,20 @@
 - fetch:
     src: /etc/shadowsocks-libev/client.json
     dest: "./downloads"
+
+- template:
+    src: shadowsocks.xml.j2
+    dest: /etc/firewalld/services/shadowsocks.xml
+  register: shadowsocks_firewalld
+
+- service:
+    name: firewalld
+    state: reloaded
+  when: shadowsocks_firewalld.changed
+
+- ansible.posix.firewalld:
+    service: shadowsocks
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
