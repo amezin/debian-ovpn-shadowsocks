@@ -7,8 +7,6 @@
       tags: no-ssh-password
     - role: update-all
       tags: update-all
-    - role: kernel-backport
-      tags: kernel-backport
     - role: firewalld
       tags: firewalld
     - role: fail2ban

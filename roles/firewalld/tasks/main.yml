@@ -1,13 +1,3 @@
-- template:
-    src: firewalld-pin-backport.j2
-    dest: /etc/apt/preferences.d/firewalld-backports
-
-- package:
-    name:
-      - ipset
-      - iptables
-    state: latest
-
 - package:
     name:
       - firewalld
